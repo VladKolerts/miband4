@@ -1,14 +1,14 @@
 {
   "name": "miband4",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Simple mi band 4 connector",
   "main": "index.js",
-  "dependencies": {
-    "node-ble": "1.2.0"
-  },
-  "devDependencies": {},
   "scripts": {
     "test": "node example"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VladKolerts/miband4"
   },
   "keywords": [
     "mi-band",
@@ -16,5 +16,11 @@
     "xiaomi"
   ],
   "author": "v.Kolerts",
-  "license": "ISC"
+  "email": "str.mail.ru@bk.ru",
+  "license": "ISC",
+  "dependencies": {
+    "jspack": "0.0.4",
+    "node-ble": "1.2.0"
+  },
+  "devDependencies": {}
 }
