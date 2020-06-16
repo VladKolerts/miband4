@@ -81,14 +81,14 @@ class MiBand4 {
     const status = +jspack.Unpack('b', val, 2).toString() ? 'charge' : 'normal';
     const last_charge_level = +jspack.Unpack('b', val, 19).toString();
     const last_charge_date = this._parseDate(val, 11);
-    const last_off_date = this._parseDate(val, 3);
+    const last_fullcharge_date = this._parseDate(val, 3);
 
     const result = {
       level,
       status,
       last_charge_level,
       last_charge_date,
-      last_off_date,
+      last_fullcharge_date,
     }
     return result;
   }
