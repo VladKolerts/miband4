@@ -1,4 +1,3 @@
-const {jspack} = require('jspack');
 const {createBluetooth} = require('node-ble');
 const {bluetooth, destroy} = createBluetooth();
 const {
@@ -77,9 +76,9 @@ class MiBand4 {
   async getBattery() {
     const char = await this.serviceBand1.getCharacteristic(CHAR_UUIDS.battery);
     const val = await char.readValue();
-    const level = +jspack.Unpack('b', val, 1).toString();
-    const status = +jspack.Unpack('b', val, 2).toString() ? 'charge' : 'normal';
-    const last_charge_level = +jspack.Unpack('b', val, 19).toString();
+    const level = val.readInt8(1);
+    const status = val.readInt8(2) ? 'charge' : 'normal';
+    const last_charge_level = val.readInt8(19);
     const last_charge_date = this._parseDate(val, 11);
     const last_fullcharge_date = this._parseDate(val, 3);
 
@@ -103,21 +102,16 @@ class MiBand4 {
   _parseDate(buf, offset = 0) {
     if (buf.length - offset < 6) return {};
 
-    // const year = +jspack.Unpack('h', buf, offset).toString();
-    const month = +jspack.Unpack('b', buf, offset+2).toString();
-    const day = +jspack.Unpack('b', buf, offset+3).toString();
-    const hours = +jspack.Unpack('b', buf, offset+4).toString();
-    const minutes = +jspack.Unpack('b', buf, offset+5).toString();
-    const seconds = +jspack.Unpack('b', buf, offset+6).toString();
+    const Y = buf.readInt16LE(offset);
+    const m = buf.readInt8(offset+2);
+    const d = buf.readInt8(offset+3);
+    const H = buf.readInt8(offset+4);
+    const i = buf.readInt8(offset+5);
+    const s = buf.readInt8(offset+6);
 
-    return {
-      // year,
-      month,
-      day,
-      hours,
-      minutes,
-      seconds,
-    };
+    return (new Date(`${Y}-${m}-${d} ${H}:${i}:${s}`))
+      // .getTime();
+      // .toLocaleString();
   }
 
 
